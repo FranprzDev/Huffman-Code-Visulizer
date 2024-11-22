@@ -49,16 +49,61 @@
         cursor: pointer;
         padding: 10px;
       }
+      .box {
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin: 20px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+    
+    .box h2 {
+        margin-top: 0;
+    }
+    
+    .box textarea {
+        width: 100%;
+        height: 100px;
+        margin-bottom: 10px;
+    }
+    
+    .box table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .box table th, .box table td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: left;
+    }
+    
+    .box table th {
+
+        background-color: #f2f2f2;
+    }
+    .table {
+      margin-top: 10px;
+    }
     </style>
   </head>
   <body>
-    <div id="slider">
-      <div class="userInput">
-        <textarea name="" id="input"></textarea>
-        <button id="submit">get huffman</button>
-      </div>
+    <div class="box enCoder">
+      <h2>Codificador</h2>
+      <textarea type="text" id="input" placeholder="Ingresa un texto para convertir" autofocus></textarea>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Caracter</th>
+            <th>Frecuencia</th>
+            <th>%</th>
+          </tr>
+        </thead>
+        <tbody class="codificador" id="enconde">
+        </tbody>
+      </table>
+      <button id="submit">Obtener huffman</button>
     </div>
-    <div id="icon"><i class="fa fa-2x fa-angle-double-down"></i></div>
     <div id="cy"></div>
     <script src="cytoscape.min.js"></script>
 
