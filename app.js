@@ -60,20 +60,11 @@ function constructHuffman(PriorityQueue) {
 
   return PriorityQueue[0];
 }
-
 function getCode(root, code) {
   if (!root) return;
   if (root.symbol != PARENT) {
-    let x = 0;
-    let j = 0;
-    for (let i = 0; i < code.length; i++) {
-      if (code[i] == "1") {
-        x += Math.pow(2, j);
-      }
-      j++;
-    }
-    encode[root.symbol] = x;
-    decode[x] = root.symbol;
+    encode[root.symbol] = code;
+    decode[code] = root.symbol;
     return;
   }
 
@@ -165,28 +156,30 @@ function visualizeHuffman(root) {
 }
 
 function populateEncoderTable(frequencies, encode) {
-    const tableBody = document.querySelector("#enconde");
-    tableBody.innerHTML = "";
-  
-    const totalChars = Object.values(frequencies).reduce(
-      (sum, node) => sum + node.frequency,
-      0
-    );
-  
-    for (const char in frequencies) {
-      const frequency = frequencies[char].frequency;
-      const percentage = ((frequency / totalChars) * 100).toFixed(2);
-      const code = encode[char];
-  
-      const row = document.createElement("tr");
-      row.innerHTML = `
-              <td>${char === " " ? "Espacio" : char}</td>
-              <td>${frequency} veces</td>
-              <td>${percentage}%</td>
-          `;
-      tableBody.appendChild(row);
-    }
+  const tableBody = document.querySelector("#enconde");
+  tableBody.innerHTML = "";
+
+  const totalChars = Object.values(frequencies).reduce(
+    (sum, node) => sum + node.frequency,
+    0
+  );
+
+  for (const char in frequencies) {
+    const frequency = frequencies[char].frequency;
+    const percentage = ((frequency / totalChars) * 100).toFixed(2);
+    const code = encode[char];
+    console.log(code);
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+            <td>${char === " " ? "Espacio" : char}</td>
+            <td>${frequency} veces</td>
+            <td>${percentage}%</td>
+            <td>${code}</td>
+        `;
+    tableBody.appendChild(row);
   }
+}
 
 function encodeHuffman(text) {
   let Frequencies = getFrequencies(text);
@@ -194,8 +187,8 @@ function encodeHuffman(text) {
   let Huffman_Heap_Root = constructHuffman(ProrityQueue);
   getCode(Huffman_Heap_Root, "");
   let { nodes, edges } = visualizeHuffman(Huffman_Heap_Root);
-  populateEncoderTable(Frequencies, encode);
   cytoVisualize(nodes, edges);
+  populateEncoderTable(Frequencies, encode);
 }
 
 function cytoVisualize(nodes, edges) {
@@ -210,9 +203,9 @@ function cytoVisualize(nodes, edges) {
       {
         selector: "node",
         style: {
-          "background-color": "#78AACB",
+          "background-color": "#6600A1",
           label: "data(symbol)",
-          "font-size": "20px",
+          "font-size": "30px",
           "text-halign": "center",
           "text-valign": "center",
           color: "ghostwhite",
@@ -223,7 +216,7 @@ function cytoVisualize(nodes, edges) {
         selector: "edge",
         style: {
           width: 1,
-          "line-color": "#6d9ecb",
+          "line-color": "#8a9597",
           "target-arrow-color": "#ccc",
           "target-arrow-shape": "triangle",
           label: "data(label)",
