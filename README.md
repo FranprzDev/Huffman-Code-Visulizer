@@ -1,6 +1,6 @@
 # Manual de Usuario
 
-![[Pasted image 20241129034715.png]]
+![alt text](./images/Huffman.png)
 ## Formas de usar el proyecto:
 - Utilizarlo en la web (forma fácil): https://huffmanvisualizer-fprzdev-utnfrt.netlify.app
 - Levantar el proyecto de forma local: (Seguir los pasos)
@@ -28,9 +28,9 @@ Dada el estribillo de la canción del **Potro Rodrigo**, "Ocho Cuarenta":
 **Ella multimillonaria, y del mas alto nivel, Terminó la secundaria, con un promedio de diez*, Sus amigas sorprendidas, no lo podían creer, que una noche distraída, del baile se fue con él**
 
 Introducida en el **Codificador** obtendremos las siguientes probabilidades: (sigue)
-![[Pasted image 20241129034952.png]]
+![alt text](./images//HuffmanCode.png)
 
 Podemos observar el **Árbol de Huffman** que nos mostrará como se fue generando previamente. 
-![[Pasted image 20241129035032.png]]
+![alt text](./images/HuffmanGraph.png)
 
 Con el mouse podremos desplazarnos por el árbol para visualizarlo, mover los nodos para acomodarlo; etc.
