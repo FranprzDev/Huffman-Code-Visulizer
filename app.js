@@ -164,11 +164,16 @@ function populateEncoderTable(frequencies, encode) {
     0
   );
 
-  for (const char in frequencies) {
-    const frequency = frequencies[char].frequency;
+  const arrayFrequencys = Object.values(frequencies).sort(
+    (a, b) => b.frequency - a.frequency
+  );
+  console.log(arrayFrequencys)
+
+  for (const node of arrayFrequencys) {
+    const char = node.symbol;
+    const frequency = node.frequency;
     const percentage = ((frequency / totalChars) * 100).toFixed(2);
     const code = encode[char];
-    console.log(code);
 
     const row = document.createElement("tr");
     row.innerHTML = `
