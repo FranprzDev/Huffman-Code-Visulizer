@@ -28,7 +28,7 @@ function constructPriorityQueue(nodes) {
 }
 
 function getTop(queue) {
-  let min = 999999;
+  let min = Number.MAX_SAFE_INTEGER;
   let index = -1;
   for (let i = 0; i < queue.length; i++) {
     if (queue[i].frequency < min) {
@@ -41,7 +41,7 @@ function getTop(queue) {
 
 function constructHuffman(PriorityQueue) {
   while (PriorityQueue.length > 1) {
-    let NewParetnNode = {},
+    let NewParentNode = {},
       node1 = {},
       node2 = {};
 
@@ -51,18 +51,21 @@ function constructHuffman(PriorityQueue) {
     let node2Indx = getTop(PriorityQueue);
     node2 = PriorityQueue[node2Indx];
     PriorityQueue.splice(node2Indx, 1);
-    NewParetnNode.frequency = node1.frequency + node2.frequency;
-    NewParetnNode.symbol = PARENT;
-    NewParetnNode.left = node1;
-    NewParetnNode.right = node2;
-    PriorityQueue.push(NewParetnNode);
+
+    NewParentNode.frequency = node1.frequency + node2.frequency;
+    NewParentNode.symbol = PARENT;
+    NewParentNode.left = node1;
+    NewParentNode.right = node2;
+
+    PriorityQueue.push(NewParentNode);
   }
 
   return PriorityQueue[0];
 }
+
 function getCode(root, code) {
   if (!root) return;
-  if (root.symbol != PARENT) {
+  if (root.symbol !== PARENT) {
     encode[root.symbol] = code;
     decode[code] = root.symbol;
     return;
@@ -78,7 +81,8 @@ function visualizeHuffman(root) {
   q.push({ level: level, node: root });
   let map = {};
   let lvl = 0;
-  while (q.length != 0) {
+
+  while (q.length !== 0) {
     let node = q.shift();
     if (!map[node.level]) map[node.level] = [];
     map[node.level].push(node.node.symbol);
@@ -89,20 +93,16 @@ function visualizeHuffman(root) {
   }
 
   let nodes = [];
-
   let edges = [];
   let indx = 0;
   let ids = new Array(1000).fill(0).map(() => new Array(1000).fill(0));
+
   for (let i = 0; i <= lvl; i++) {
     if (map[i]) {
-      let s = "";
-      let cnt = 0;
-      let par = 0;
       for (let j = 0; j < map[i].length; j++) {
-        s += map[i][j];
         let id = map[i][j];
-        if (id == " ") id = "/s";
-        if (map[i][j] == PARENT) {
+        if (id === " ") id = "/s";
+        if (map[i][j] === PARENT) {
           id = map[i][j] + indx;
           indx++;
         }
@@ -112,19 +112,18 @@ function visualizeHuffman(root) {
       }
     }
   }
+
   for (let i = 0; i <= lvl; i++) {
     if (map[i]) {
-      let s = "";
       let cnt = 0;
       let par = 0;
       for (let j = 0; j < map[i].length; j++) {
-        s += map[i][j];
-        if (i != 0) {
-          if (cnt == 2) {
+        if (i !== 0) {
+          if (cnt === 2) {
             cnt = 0;
             par++;
           }
-          if (map[i - 1][par] != PARENT) {
+          if (map[i - 1][par] !== PARENT) {
             par++;
             j--;
             continue;
@@ -133,21 +132,10 @@ function visualizeHuffman(root) {
           let parent = ids[i - 1][par];
           let child = ids[i][j];
 
-          let label = cnt == 1 ? "1" : "0";
+          // Establece el label basado en la posición del hijo (izquierda = "0", derecha = "1")
+          let label = cnt === 1 ? "0" : "1";
 
           edges.push({ data: { source: parent, target: child, label: label } });
-          if (cnt == 2) {
-            let lastIndex = edges.length - 1;
-            if (
-              edges[lastIndex].data.target < edges[lastIndex - 1].data.target
-            ) {
-              edges[lastIndex].data.label = "1";
-              edges[lastIndex - 1].data.label = "0";
-            } else {
-              edges[lastIndex].data.label = "0";
-              edges[lastIndex - 1].data.label = "1";
-            }
-          }
         }
       }
     }
@@ -167,7 +155,6 @@ function populateEncoderTable(frequencies, encode) {
   const arrayFrequencys = Object.values(frequencies).sort(
     (a, b) => b.frequency - a.frequency
   );
-  console.log(arrayFrequencys)
 
   for (const node of arrayFrequencys) {
     const char = node.symbol;
@@ -187,10 +174,15 @@ function populateEncoderTable(frequencies, encode) {
 }
 
 function encodeHuffman(text) {
+  encode = {}; // Reset encoding map
+  decode = {}; // Reset decoding map
+
   let Frequencies = getFrequencies(text);
-  let ProrityQueue = constructPriorityQueue(Frequencies);
-  let Huffman_Heap_Root = constructHuffman(ProrityQueue);
+  let PriorityQueue = constructPriorityQueue(Frequencies);
+  let Huffman_Heap_Root = constructHuffman(PriorityQueue);
+
   getCode(Huffman_Heap_Root, "");
+
   let { nodes, edges } = visualizeHuffman(Huffman_Heap_Root);
   cytoVisualize(nodes, edges);
   populateEncoderTable(Frequencies, encode);
@@ -204,7 +196,6 @@ function cytoVisualize(nodes, edges) {
     autounselectify: true,
 
     style: [
-      // the stylesheet for the graph
       {
         selector: "node",
         style: {
@@ -216,7 +207,6 @@ function cytoVisualize(nodes, edges) {
           color: "ghostwhite",
         },
       },
-
       {
         selector: "edge",
         style: {
