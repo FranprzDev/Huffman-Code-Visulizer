@@ -217,6 +217,14 @@ function cytoVisualize(nodes, edges) {
           label: "data(label)",
         },
       },
+      {
+        selector: ".highlighted",
+        style: {
+          "line-color": "#d4acec",
+          "target-arrow-color": "#FF5733",
+          "width": 3,
+        },
+      },
     ],
 
     elements: {
@@ -233,5 +241,24 @@ function cytoVisualize(nodes, edges) {
       avoidOverlap: true,
     },
   });
+
+  cy.on("tap", "node", function (evt) {
+    const node = evt.target;
+    cy.edges().removeClass("highlighted"); 
+
+    if (!node.data().symbol || node.data().symbol === PARENT) return;
+
+    let connectedEdges = [];
+    let currentNode = node;
+
+    while (true) {
+      let incomingEdge = currentNode.connectedEdges((edge) => edge.target().id() === currentNode.id());
+      if (incomingEdge.length === 0) break;
+
+      connectedEdges.push(incomingEdge[0]);
+      currentNode = incomingEdge[0].source();
+    }
+
+    connectedEdges.forEach((edge) => edge.addClass("highlighted"));
+  });
 }
-a
